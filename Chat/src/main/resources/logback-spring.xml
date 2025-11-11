@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="10 minutes">
+
+    <!-- 控制台日志输出 -->
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <!--  新写法：使用 encoder 取代 layout -->
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss, GMT+8} [%p][%c][%M][%L] -> %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 从 Spring 环境中读取属性 -->
+    <springProperty scope="context" name="log.path" source="project.folder"/>
+    <springProperty scope="context" name="log.root.level" source="log.root.level"/>
+
+    <!-- 本地属性 -->
+    <property name="LOG_FOLDER" value="logs"/>
+    <property name="LOG_FILE_NAME" value="NoriChat.log"/>
+
+    <!-- 文件日志输出 -->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/${LOG_FOLDER}/${LOG_FILE_NAME}</file>
+
+        <!--  新写法：使用 SizeAndTimeBasedRollingPolicy -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}/${LOG_FOLDER}/${LOG_FILE_NAME}.%d{yyyyMMdd}.%i</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+
+        <!--  encoder 保留 -->
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss, GMT+8} [%p][%c][%M][%L] -> %m%n</pattern>
+        </encoder>
+
+        <!--  改成 append=true（日志追加写入） -->
+        <append>true</append>
+        <prudent>false</prudent>
+    </appender>
+
+    <!-- 屏蔽某些模块的无关日志 -->
+    <logger name="org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener" level="error"/>
+    <logger name="org.redisson.connection.DNSMonitor" level="error"/>
+    <logger name="com.zaxxer.hikari" level="info"/>
+    <logger name="io.lettuce.core" level="info"/>
+    <logger name="org.springframework.data.redis" level="info"/>
+
+    <!-- 根日志配置 -->
+    <root level="${log.root.level}">
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="file"/>
+    </root>
+
+</configuration>

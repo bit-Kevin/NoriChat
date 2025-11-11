@@ -1,0 +1,5 @@
+2025-11-11 23:04:52 [DEBUG][org.springframework.web.servlet.DispatcherServlet][traceDebug][120] -> GET "/api/test", parameters={}
+2025-11-11 23:04:52 [DEBUG][org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping][getHandler][533] -> Mapped to io.github.kevvy.chat_java.controller.TestController#test()
+2025-11-11 23:04:52 [DEBUG][org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor][writeWithMessageConverters][310] -> Using 'text/html', given [text/html, application/xhtml+xml, image/avif, image/webp, image/apng, application/xml;q=0.9, */*;q=0.8, application/signed-exchange;v=b3;q=0.7] and supported [text/plain, */*, application/json, application/*+json, application/yaml]
+2025-11-11 23:04:52 [DEBUG][org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor][traceDebug][120] -> Writing ["成功了"]
+2025-11-11 23:04:52 [DEBUG][org.springframework.web.servlet.DispatcherServlet][logResult][1138] -> Completed 200 OK
