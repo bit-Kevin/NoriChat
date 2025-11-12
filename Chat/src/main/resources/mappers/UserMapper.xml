@@ -33,7 +33,7 @@
     </select>
 
     <select id="findById" parameterType="String" resultMap="BaseResultMap">
-        SELECT * FROM user WHERE id = #{id}
+        SELECT * FROM user WHERE user_id = #{id} AND `status` =0
     </select>
 
     <insert id="insertUser" parameterType="io.github.kevvy.chat_java.entity.User">

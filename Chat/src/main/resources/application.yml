@@ -61,10 +61,25 @@ spring:
           database: 0
           # 如果有密码，可加上：
           # password: yourpassword
+  mail:
+    host: smtp.qq.com          # 163: smtp.163.com  Gmail: smtp.gmail.com
+    port: 465                  # 465 SSL / 587 STARTTLS
+    username: 2035098108@qq.com    # 你的发件邮箱
+    password: prizztrqkiikecdf     # 邮箱“授权码”
+    protocol: smtps            # 465 用 smtps；如用 587：protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls.enable: true
+          starttls.required: true
+        debug: false           # 调试打开 true 可看详细日志
+from:
+  mail: 2035098108@qq.com          # 作为默认发件人
 
 mybatis:
   #MyBatis 会自动扫描这个包下所有类，就是用来写sql的xml
-  mapper-locations: classpath:mapper/*.xml
+  mapper-locations: classpath:mappers/*.xml
   #MyBatis 会自动扫描这个包下所有类,省的parameterType路径过长如io.github.kevvy.chat_java.entity.User
   type-aliases-package: io.github.kevvy.chat_java.entity
 
@@ -81,5 +96,12 @@ admin:
 
 #是否开发模式
 dev: false
+
+jwt:
+  secret: KevvySecretKey-K3vvyS3cur3Key-ForJWT!!
+  expire-time: 3600000  # token有效期（毫秒）这里是1小时
+
+
+
 
 
