@@ -1,8 +1,7 @@
-package io.github.kevvy.chat_java.config;
+package io.github.kevvy.chat_java.entity.config;
 
 import io.github.kevvy.chat_java.interceptor.JwtInterceptor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

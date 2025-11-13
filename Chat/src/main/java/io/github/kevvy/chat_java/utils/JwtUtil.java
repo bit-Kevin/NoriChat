@@ -2,13 +2,11 @@ package io.github.kevvy.chat_java.utils;
 
 import java.util.Date;
 
-import io.github.kevvy.chat_java.config.JwtProperties;
+import io.github.kevvy.chat_java.entity.config.JwtProperties;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.webresources.JarWarResource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;

@@ -11,7 +11,7 @@
     </appender>
 
     <!-- 从 Spring 环境中读取属性 -->
-    <springProperty scope="context" name="log.path" source="project.folder"/>
+    <springProperty scope="context" name="log.path" source="log.root.path"/>
     <springProperty scope="context" name="log.root.level" source="log.root.level"/>
 
     <!-- 本地属性 -->

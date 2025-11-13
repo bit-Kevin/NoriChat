@@ -84,11 +84,12 @@ mybatis:
   type-aliases-package: io.github.kevvy.chat_java.entity
 
 project:
-  folder: f:/log/NoriChat/
+  folder: f:/Chat/WebSer/WebAPP/
 
 log:
   root:
     level: info
+    path: f:/log/NoriChat/
 
 #超级管理员
 admin:
@@ -99,7 +100,7 @@ dev: false
 
 jwt:
   secret: KevvySecretKey-K3vvyS3cur3Key-ForJWT!!
-  expire-time: 3600000  # token有效期（毫秒）这里是1小时
+  expire-time: 86400000  # token有效期（毫秒）这里是24小时
 
 
 

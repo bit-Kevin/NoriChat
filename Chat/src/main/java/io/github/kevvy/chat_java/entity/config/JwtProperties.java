@@ -1,4 +1,4 @@
-package io.github.kevvy.chat_java.config;
+package io.github.kevvy.chat_java.entity.config;
 
 
 import lombok.Data;
