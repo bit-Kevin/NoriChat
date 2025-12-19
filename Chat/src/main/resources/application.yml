@@ -78,6 +78,9 @@ from:
   mail: 2035098108@qq.com          # 作为默认发件人
 
 mybatis:
+  configuration:
+    #打印 sql 告诉 MyBatis “用 SLF4J 打日志”
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
   #MyBatis 会自动扫描这个包下所有类，就是用来写sql的xml
   mapper-locations: classpath:mappers/*.xml
   #MyBatis 会自动扫描这个包下所有类,省的parameterType路径过长如io.github.kevvy.chat_java.entity.User
@@ -88,8 +91,9 @@ project:
 
 log:
   root:
-    level: info
-    path: f:/log/NoriChat/
+    #level: DEBUG
+    level: INFO
+    path: ./logs/NoriChat
 
 #超级管理员
 admin:

@@ -25,7 +25,6 @@ public class AuthController {
     @PostMapping("/code/send")
     public Result<Void> send(@RequestBody Map<String, String> body) {
         if (!StringUtil.isEmail(body.get("email"))) return Result.error(400, "邮箱格式错误");
-
         String err = mailCodeService.sendRegisterCode(body.get("email"));
         return err == null ? Result.success() : Result.error(400, err);
     }

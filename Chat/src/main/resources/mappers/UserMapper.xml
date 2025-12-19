@@ -21,12 +21,7 @@
     </resultMap>
     <!--SQL 片段复用模板。-->
     <sql id="Base_Column_List">
-        user_id
-        ,email,nick_name,
-        join_type,sex,password,
-        signature,status,create_time,
-        last_login_time,area_name,area_code,
-        last_off_time
+        user_id,email,nick_name,join_type,sex,password,signature,status,create_time,last_login_time,area_name,area_code,last_off_time
     </sql>
 
     <select id="countAll" resultType="java.lang.Integer">
@@ -49,18 +44,20 @@
     <select id="findByEmail" parameterType="String" resultMap="BaseResultMap">
         SELECT *
         FROM user
-        WHERE email = #{id}
+        WHERE email = #{email}
           AND `status` = 0
     </select>
 
     <insert id="insertUser" parameterType="io.github.kevvy.chat_java.entity.User">
-        INSERT INTO user(username, password)
-        VALUES (#{username}, #{password})
+        INSERT INTO user(
+        <include refid="Base_Column_List"/>
+        )
+        VALUES (#{userId},#{email},#{nickName},#{joinType},#{sex},#{password},#{signature},#{status},#{createTime}, #{lastLoginTime}, #{areaName}, #{areaCode}, #{lastOffTime})
     </insert>
 
     <delete id="deleteUser" parameterType="String">
         DELETE
         FROM user
-        WHERE id = #{id}
+        WHERE user_id = #{id}
     </delete>
 </mapper>

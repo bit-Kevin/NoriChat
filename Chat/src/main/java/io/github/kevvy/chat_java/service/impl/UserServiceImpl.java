@@ -1,5 +1,6 @@
 package io.github.kevvy.chat_java.service.impl;
 
+import io.github.kevvy.chat_java.common.Result;
 import io.github.kevvy.chat_java.common.exception.BusinessException;
 import io.github.kevvy.chat_java.entity.config.APPConfig;
 import io.github.kevvy.chat_java.entity.dto.TokenUserInfoDto;
@@ -11,6 +12,7 @@ import io.github.kevvy.chat_java.utils.JwtUtil;
 import io.github.kevvy.chat_java.utils.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,6 +27,7 @@ public class UserServiceImpl implements UserService {
     private final APPConfig appConfig;
 
     private final RedisComponent redisComponent;
+    private final MailCodeService mailCodeService;
 
     @Override
     public boolean register(User user) {
@@ -32,7 +35,9 @@ public class UserServiceImpl implements UserService {
         if (exist != null) {
             return false; // 用户已存在
         }
-        //创建用户id
+        boolean ok = verify(user.getEmail(),user.getUserId());//注册时用 id字段临时存储验证码 code
+        if (!ok) throw new BusinessException(400, "验证码错误或已过期");
+        //创建用户 id
         user.setUserId("US" + StringUtil.randomDigits(8) + StringUtil.randomDigits(2, "RANDOM"));
         user.setStatus(0);
         user.setCreateTime(LocalDateTime.now());
@@ -49,11 +54,11 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.findByEmail(u.getEmail());
         if (user == null || !user.getPassword().equals(u.getPassword()))
             throw new BusinessException(400, "邮箱或者密码错误");
-        if (user.getStatus() == 1) throw new BusinessException(400, "账号已禁用");
+        if (user.getStatus() == 2) throw new BusinessException(400, "账号已禁用");
         if (redisComponent.isUserOnline(user.getUserId()))throw new BusinessException(400, "账号已在别的客户端登录");
         //TODO 查询联系人和群组
         TokenUserInfoDto dto = getTokenUserInfoDto(user);
-        //将初始化信息存入到redis
+        //将初始化信息存入到 redis
         redisComponent.saveTokenUserInfoDto(dto);
         return dto;
 
@@ -96,5 +101,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public int deleteUser(String id) {
         return userMapper.deleteUser(id);
+    }
+
+    @Override
+    public boolean verify(String email,String code) {
+        return mailCodeService.checkCode(email, code);
     }
 }

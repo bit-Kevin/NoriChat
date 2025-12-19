@@ -46,7 +46,7 @@ public class User implements Serializable {
     private String signature;
 
     /**
-     * 
+     * 0正常 ，1废弃，2禁用
      */
     private Integer status;
 

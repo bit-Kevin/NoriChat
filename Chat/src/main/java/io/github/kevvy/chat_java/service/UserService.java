@@ -12,4 +12,5 @@ public interface UserService {
     User getUserById(String id);
     int createUser(User user);
     int deleteUser(String id);
+    boolean verify(String email,String code);
 }
