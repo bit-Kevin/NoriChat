@@ -15,12 +15,20 @@ public class Constants {
      * 设置发送锁。验证码发送后设置多少秒时间才能再次发送
      */
     public static final String REDIS_KEY_CHECK_LOCK = "code:lock:";
-
+    /**
+     * 客户端心跳
+     */
     public static final String REDIS_KEY_WS_USER_HEART_BEAT = "ws:user:heart:beat:";
 
     public static final String REDIS_KEY_WS_TOKEN = "ws:token:";
-
     public static final String REDIS_KEY_WS_TOKEN_REFRESH = "ws:token:refresh:";
     public static final String REDIS_KEY_WS_TOKEN_USERID = "ws:token:userid:";
+    /**
+     * 预留 ai机器人
+     */
+    public static final String ROBOT_ID ="";
+
+    public static final String REDIS_SYS_SETTING ="NoriChat:sysSetting";
+
 
 }

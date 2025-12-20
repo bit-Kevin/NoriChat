@@ -1,8 +1,10 @@
 package io.github.kevvy.chat_java.controller;
 
 import io.github.kevvy.chat_java.common.Result;
+import io.github.kevvy.chat_java.entity.dto.SysSettingDto;
 import io.github.kevvy.chat_java.entity.dto.TokenUserInfoDto;
 import io.github.kevvy.chat_java.entity.User;
+import io.github.kevvy.chat_java.redis.RedisComponent;
 import io.github.kevvy.chat_java.service.UserService;
 import io.github.kevvy.chat_java.service.impl.MailCodeService;
 import io.github.kevvy.chat_java.utils.JwtUtil;
@@ -20,6 +22,7 @@ public class AuthController {
     private final JwtUtil jwtUtil;
     private final UserService userService;
     private final MailCodeService mailCodeService;
+    private final RedisComponent redisComponent;
 
     // 发送验证码
     @PostMapping("/code/send")
@@ -51,6 +54,11 @@ public class AuthController {
     public Result<TokenUserInfoDto> login(@RequestBody User user) {
         //TODO 图片验证码
         return Result.success("登录成功",userService.login(user));
+    }
 
+    //获取系统设置
+    @GetMapping("/getSysSetting")
+    public Result<SysSettingDto> getSysSetting(){
+        return Result.success(redisComponent.getSysSetting());
     }
 }

@@ -1,6 +1,7 @@
 package io.github.kevvy.chat_java.redis;
 
 import io.github.kevvy.chat_java.entity.constants.Constants;
+import io.github.kevvy.chat_java.entity.dto.SysSettingDto;
 import io.github.kevvy.chat_java.entity.dto.TokenUserInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -43,5 +44,14 @@ public class RedisComponent {
         redisUtil.expire(Constants.REDIS_KEY_WS_TOKEN, Constants.REDIS_TIME_1DAY);
         redisUtil.expire(Constants.REDIS_KEY_WS_TOKEN_REFRESH, Constants.REDIS_TIME_1DAY * 2);
 
+    }
+
+    /**
+     * 初始化系统设置
+     */
+    public SysSettingDto getSysSetting() {
+        SysSettingDto settingDto = (SysSettingDto) redisUtil.get(Constants.REDIS_SYS_SETTING);
+         settingDto = settingDto==null? new SysSettingDto():settingDto;
+         return settingDto;
     }
 }
