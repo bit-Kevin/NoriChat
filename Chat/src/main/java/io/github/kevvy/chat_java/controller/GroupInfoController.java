@@ -19,7 +19,6 @@ public class GroupInfoController {
 
     @RequestMapping("saveGroup")
     public Result<Void> saveGroup(@RequestBody GroupInfo groupInfo){
-        //todo
         return Result.success();
     }
 }
