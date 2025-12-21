@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.github.kevvy.chat_java.mappers.UserContactMapper">
+
+    <resultMap id="BaseMap" type="io.github.kevvy.chat_java.entity.UserContact">
+        <id column="user_id" property="userId"/>
+        <id column="contact_id" property="contactId"/>
+        <result column="contact_type" property="contactType"/>
+        <result column="create_time" property="createTime"/>
+        <result column="status" property="status"/>
+        <result column="last_update_time" property="lastUpdateTime"/>
+    </resultMap>
+
+    <sql id="BaseColumns">
+        user_id, contact_id, contact_type, create_time, status, last_update_time
+    </sql>
+
+    <insert id="insert" parameterType="io.github.kevvy.chat_java.entity.UserContact">
+        INSERT INTO user_contact
+        (user_id, contact_id, contact_type, create_time, status, last_update_time)
+        VALUES
+            (#{userId}, #{contactId}, #{contactType}, #{createTime}, #{status}, #{lastUpdateTime})
+    </insert>
+
+    <update id="updateStatus">
+        UPDATE user_contact
+        SET status = #{status}
+        WHERE user_id = #{userId}
+          AND contact_id = #{contactId}
+    </update>
+
+    <select id="selectByPk" resultMap="BaseMap">
+        SELECT <include refid="BaseColumns"/>
+        FROM user_contact
+        WHERE user_id = #{userId}
+        AND contact_id = #{contactId}
+    </select>
+
+    <select id="listByUserId" resultMap="BaseMap">
+        SELECT <include refid="BaseColumns"/>
+        FROM user_contact
+        WHERE user_id = #{userId}
+        <if test="contactType != null">
+            AND contact_type = #{contactType}
+        </if>
+        ORDER BY last_update_time DESC
+    </select>
+
+    <delete id="deleteByPk">
+        DELETE FROM user_contact
+        WHERE user_id = #{userId}
+          AND contact_id = #{contactId}
+    </delete>
+
+</mapper>

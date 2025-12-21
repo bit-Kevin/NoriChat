@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.github.kevvy.chat_java.mappers.UserContactApplyMapper">
+
+    <resultMap id="BaseMap" type="io.github.kevvy.chat_java.entity.UserContactApply">
+        <id column="apply_id" property="applyId"/>
+        <result column="apply_user_id" property="applyUserId"/>
+        <result column="receive_user_id" property="receiveUserId"/>
+        <result column="contact_type" property="contactType"/>
+        <result column="contact_id" property="contactId"/>
+        <result column="last_apply_time" property="lastApplyTime"/>
+        <result column="status" property="status"/>
+        <result column="apply_info" property="applyInfo"/>
+    </resultMap>
+
+    <sql id="BaseColumns">
+        apply_id, apply_user_id, receive_user_id, contact_type, contact_id,
+        last_apply_time, status, apply_info
+    </sql>
+
+    <insert id="insert" parameterType="io.github.kevvy.chat_java.entity.UserContactApply" useGeneratedKeys="true" keyProperty="applyId">
+        INSERT INTO user_contact_apply
+        (apply_user_id, receive_user_id, contact_type, contact_id, last_apply_time, status, apply_info)
+        VALUES
+            (#{applyUserId}, #{receiveUserId}, #{contactType}, #{contactId}, #{lastApplyTime}, #{status}, #{applyInfo})
+    </insert>
+
+    <update id="updateStatus">
+        UPDATE user_contact_apply
+        SET status = #{status}
+        WHERE apply_id = #{applyId}
+    </update>
+
+    <select id="selectById" resultMap="BaseMap">
+        SELECT <include refid="BaseColumns"/>
+        FROM user_contact_apply
+        WHERE apply_id = #{applyId}
+    </select>
+
+    <select id="listPendingByReceiver" resultMap="BaseMap">
+        SELECT <include refid="BaseColumns"/>
+        FROM user_contact_apply
+        WHERE receive_user_id = #{receiveUserId}
+        AND status = 0
+        <if test="contactType != null">
+            AND contact_type = #{contactType}
+        </if>
+        ORDER BY last_apply_time DESC
+    </select>
+
+    <select id="selectByUniqueKey" resultMap="BaseMap">
+        SELECT <include refid="BaseColumns"/>
+        FROM user_contact_apply
+        WHERE apply_user_id = #{applyUserId}
+        AND receive_user_id = #{receiveUserId}
+        AND contact_id = #{contactId}
+        LIMIT 1
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM user_contact_apply
+        WHERE apply_id = #{applyId}
+    </delete>
+
+</mapper>

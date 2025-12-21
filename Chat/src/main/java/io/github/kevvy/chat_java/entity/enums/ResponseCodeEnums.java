@@ -1,0 +1,27 @@
+package io.github.kevvy.chat_java.entity.enums;
+
+import lombok.Data;
+
+public enum ResponseCodeEnums {
+    code_200(200, "请求成功"),
+    code_404(404, "页面不存在"),
+    code_600(600, "请求参数以及存在"),
+    code_500(500, "服务器错误，请联系管理员"),
+    ;
+
+    private Integer code;
+    private String msg;
+
+    ResponseCodeEnums(Integer code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+}

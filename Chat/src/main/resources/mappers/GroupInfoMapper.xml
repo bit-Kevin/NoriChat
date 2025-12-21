@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.github.kevvy.chat_java.mappers.GroupInfoMapper">
+
+    <resultMap id="BaseMap" type="io.github.kevvy.chat_java.entity.GroupInfo">
+        <id column="group_id" property="groupId"/>
+        <result column="group_name" property="groupName"/>
+        <result column="group_owner_id" property="groupOwnerId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="group_notice" property="groupNotice"/>
+        <result column="join_type" property="joinType"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <sql id="BaseColumns">
+        group_id, group_name, group_owner_id, create_time, group_notice, join_type, status
+    </sql>
+
+    <insert id="insert" parameterType="io.github.kevvy.chat_java.entity.GroupInfo">
+        INSERT INTO group_info
+        (group_id, group_name, group_owner_id, create_time, group_notice, join_type, status)
+        VALUES
+            (#{groupId}, #{groupName}, #{groupOwnerId}, #{createTime}, #{groupNotice}, #{joinType}, #{status})
+    </insert>
+
+    <update id="updateById" parameterType="io.github.kevvy.chat_java.entity.GroupInfo">
+        UPDATE group_info
+        <set>
+            <if test="groupName != null">group_name = #{groupName},</if>
+            <if test="groupOwnerId != null">group_owner_id = #{groupOwnerId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="groupNotice != null">group_notice = #{groupNotice},</if>
+            <if test="joinType != null">join_type = #{joinType},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        WHERE group_id = #{groupId}
+    </update>
+
+    <update id="updateNotice">
+        UPDATE group_info
+        SET group_notice = #{groupNotice}
+        WHERE group_id = #{groupId}
+    </update>
+
+    <update id="updateStatus">
+        UPDATE group_info
+        SET status = #{status}
+        WHERE group_id = #{groupId}
+    </update>
+
+    <select id="selectById" resultMap="BaseMap">
+        SELECT <include refid="BaseColumns"/>
+        FROM group_info
+        WHERE group_id = #{groupId}
+    </select>
+
+    <select id="listByOwnerId" resultMap="BaseMap">
+        SELECT <include refid="BaseColumns"/>
+        FROM group_info
+        WHERE group_owner_id = #{ownerId}
+        ORDER BY create_time DESC
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM group_info
+        WHERE group_id = #{groupId}
+    </delete>
+
+</mapper>
