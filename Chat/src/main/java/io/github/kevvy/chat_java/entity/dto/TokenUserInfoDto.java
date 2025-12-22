@@ -11,13 +11,9 @@ import java.io.Serializable;
 public class TokenUserInfoDto implements Serializable {
     //确保从字节数据反序列化时版本一致
     private static final long serialVersionUID = 202402010001L;
-
     private String token;
     private String userID;
-
     private String nickName;
-
     private boolean admin;
-
 
 }

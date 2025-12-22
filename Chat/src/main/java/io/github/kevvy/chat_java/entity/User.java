@@ -2,6 +2,8 @@ package io.github.kevvy.chat_java.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 /**
@@ -58,6 +60,7 @@ public class User implements Serializable {
     /**
      * 
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastLoginTime;
 
     /**
@@ -73,6 +76,7 @@ public class User implements Serializable {
     /**
      * 最后离开时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Long lastOffTime;
 
     private static final long serialVersionUID = 1L;
