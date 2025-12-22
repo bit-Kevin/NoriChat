@@ -13,17 +13,18 @@
         <result column="group_notice" property="groupNotice"/>
         <result column="join_type" property="joinType"/>
         <result column="status" property="status"/>
+        <result column="img_path" property="imgPath"/>
     </resultMap>
 
     <sql id="BaseColumns">
-        group_id, group_name, group_owner_id, create_time, group_notice, join_type, status
+        group_id, group_name, group_owner_id, create_time, group_notice, join_type, status,img_path
     </sql>
 
     <insert id="insert" parameterType="io.github.kevvy.chat_java.entity.GroupInfo">
         INSERT INTO group_info
-        (group_id, group_name, group_owner_id, create_time, group_notice, join_type, status)
+        (group_id, group_name, group_owner_id, create_time, group_notice, join_type, status,img_path)
         VALUES
-            (#{groupId}, #{groupName}, #{groupOwnerId}, #{createTime}, #{groupNotice}, #{joinType}, #{status})
+            (#{groupId}, #{groupName}, #{groupOwnerId}, #{createTime}, #{groupNotice}, #{joinType}, #{status}, #{imgPath})
     </insert>
 
     <update id="updateById" parameterType="io.github.kevvy.chat_java.entity.GroupInfo">
@@ -35,6 +36,7 @@
             <if test="groupNotice != null">group_notice = #{groupNotice},</if>
             <if test="joinType != null">join_type = #{joinType},</if>
             <if test="status != null">status = #{status},</if>
+            <if test="imgPath != null">img_path = #{imgPath},</if>
         </set>
         WHERE group_id = #{groupId}
     </update>
@@ -43,6 +45,7 @@
         UPDATE group_info
         SET group_notice = #{groupNotice}
         WHERE group_id = #{groupId}
+        AND `status` = 0
     </update>
 
     <update id="updateStatus">
@@ -51,22 +54,42 @@
         WHERE group_id = #{groupId}
     </update>
 
+    <update id="updateImgPath">
+        UPDATE group_info
+        SET img_path = #{imgPath}
+        WHERE group_id = #{groupId}
+    </update>
+
+
     <select id="selectById" resultMap="BaseMap">
         SELECT <include refid="BaseColumns"/>
         FROM group_info
         WHERE group_id = #{groupId}
+        AND `status` = 0
     </select>
 
     <select id="listByOwnerId" resultMap="BaseMap">
         SELECT <include refid="BaseColumns"/>
         FROM group_info
         WHERE group_owner_id = #{ownerId}
+        AND `status` = 0
         ORDER BY create_time DESC
     </select>
+    <select id="maxCountByOwnerID" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM group_info
+        WHERE group_owner_id = #{ownerId}
+        AND `status` = 0
+    </select>
 
-    <delete id="deleteById">
-        DELETE FROM group_info
+    <update id="deleteById">
+        UPDATE group_info
+        SET `status` = 1
         WHERE group_id = #{groupId}
-    </delete>
+    </update>
+<!--    <delete id="deleteById">-->
+<!--        DELETE FROM group_info-->
+<!--        WHERE group_id = #{groupId}-->
+<!--    </delete>-->
 
 </mapper>

@@ -27,11 +27,13 @@
     <select id="countAll" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM user
+        WHERE `status` = 0
     </select>
 
     <select id="findAll" resultMap="BaseResultMap">
         SELECT *
         FROM user
+        WHERE `status` = 0
     </select>
 
     <select id="findById" parameterType="String" resultMap="BaseResultMap">
@@ -55,9 +57,15 @@
         VALUES (#{userId},#{email},#{nickName},#{joinType},#{sex},#{password},#{signature},#{status},#{createTime}, #{lastLoginTime}, #{areaName}, #{areaCode}, #{lastOffTime})
     </insert>
 
-    <delete id="deleteUser" parameterType="String">
-        DELETE
-        FROM user
+<!--    逻辑删除-->
+    <update id="deleteById">
+        UPDATE user
+        SET `status` = 1
         WHERE user_id = #{id}
-    </delete>
+    </update>
+<!--    <delete id="deleteById" parameterType="String">-->
+<!--        DELETE-->
+<!--        FROM user-->
+<!--        WHERE user_id = #{id}-->
+<!--    </delete>-->
 </mapper>

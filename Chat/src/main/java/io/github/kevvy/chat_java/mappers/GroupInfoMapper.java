@@ -20,9 +20,13 @@ public interface GroupInfoMapper {
     int updateStatus(@Param("groupId") String groupId,
                      @Param("status") Integer status);
 
+    int updateImgPath(@Param("groupId") String groupId,
+                      @Param("imgPath") Integer imgPath);
+
     GroupInfo selectById(@Param("groupId") String groupId);
 
     List<GroupInfo> listByOwnerId(@Param("ownerId") String ownerId);
+    int maxCountByOwnerID(@Param("ownerId") String ownerId);
 
     int deleteById(@Param("groupId") String groupId);
 }

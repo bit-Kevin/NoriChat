@@ -18,9 +18,8 @@ public class JwtUtil {
 
     private final JwtProperties jwtProperties;
 
-    // 生成Token
     /**
-     * 生成 Token
+     * 用userId 生成 Token
      */
     public String generateToken(String username) {
         return Jwts.builder()
@@ -32,7 +31,7 @@ public class JwtUtil {
     }
 
     /**
-     * 解析 Token
+     * 解析 Token，解析成userId
      */
     public String parseToken(String token) {
         return Jwts.parserBuilder()

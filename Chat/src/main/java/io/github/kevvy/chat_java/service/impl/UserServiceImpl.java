@@ -1,6 +1,5 @@
 package io.github.kevvy.chat_java.service.impl;
 
-import io.github.kevvy.chat_java.common.Result;
 import io.github.kevvy.chat_java.common.exception.BusinessException;
 import io.github.kevvy.chat_java.entity.config.APPConfig;
 import io.github.kevvy.chat_java.entity.dto.TokenUserInfoDto;
@@ -12,7 +11,6 @@ import io.github.kevvy.chat_java.utils.JwtUtil;
 import io.github.kevvy.chat_java.utils.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -100,7 +98,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int deleteUser(String id) {
-        return userMapper.deleteUser(id);
+        return userMapper.deleteById(id);
     }
 
     @Override

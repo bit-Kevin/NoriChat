@@ -34,9 +34,9 @@ public class AuthController {
 
     // 校验验证码
     @PostMapping("/code/verify")
-    public Result<Boolean> verify(@RequestBody Map<String, String> body) {
+    public Result<Void> verify(@RequestBody Map<String, String> body) {
         boolean ok = mailCodeService.checkCode(body.get("email"), body.get("code"));
-        return ok ? Result.success(true) : Result.error(400, "验证码错误或已过期");
+        return ok ? Result.success() : Result.error(400, "验证码错误或已过期");
     }
 
     // 注册
