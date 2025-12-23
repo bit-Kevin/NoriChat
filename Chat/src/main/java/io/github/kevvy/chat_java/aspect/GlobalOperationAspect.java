@@ -18,8 +18,11 @@ import org.springframework.stereotype.Component;
 import org.slf4j.Logger;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import io.github.kevvy.chat_java.context.UserContext;
+
 
 import java.lang.reflect.Method;
+
 @Aspect
 @Component
 public class GlobalOperationAspect {
@@ -50,6 +53,8 @@ public class GlobalOperationAspect {
             }
         } catch (BusinessException e) {
             logger.error("全局验证拦截器：{}", e.getMessage());
+            //捕获打印后需要将异常继续抛出，避免控制台只打印，但业务还在跑。抛出到GlobalExceptionHandler，由它来中断并返回结果
+            throw e;
         }
     }
 
@@ -57,24 +62,26 @@ public class GlobalOperationAspect {
         //通过 ThreadLocal，拿到当前请求。 Spring 在每个 HTTP 请求进来时，把 request 放进一个 ThreadLocal
         //Holder = “上下文存储容器”， ThreadLocal = 实现这种容器的“技术手段”
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (attributes != null) {
-            HttpServletRequest request = attributes.getRequest();
-            //从 Header 拿 token
-            String token = request.getHeader("token");
-            if (StringUtil.isEmpty(token)) {
-                //用户没有登录
-                throw new BusinessException(ResponseCodeEnums.code_900);
-            }
-            TokenUserInfoDto userInfoDto = (TokenUserInfoDto) redisUtil.get(Constants.REDIS_KEY_WS_TOKEN + token);
-            //redis 里面有没记录，登录超时
-            if (userInfoDto == null) {
-                throw new BusinessException(ResponseCodeEnums.code_900);
-            }
-            //redis 里面登录记录，再校验是否为管理员
-            if (checkAdmin && !userInfoDto.isAdmin()) {
-                throw new BusinessException(ResponseCodeEnums.code_404);
-            }
-
+        if (attributes == null) {
+            throw new BusinessException(ResponseCodeEnums.code_900);
         }
+        HttpServletRequest request = attributes.getRequest();
+        //从 Header 拿 token
+        String token = request.getHeader("token");
+        if (StringUtil.isEmpty(token)) {
+            //用户没有登录
+            throw new BusinessException(ResponseCodeEnums.code_900);
+        }
+        TokenUserInfoDto userInfoDto = (TokenUserInfoDto) redisUtil.get(Constants.REDIS_KEY_WS_TOKEN + token);
+        //redis 里面有没记录，登录超时
+        if (userInfoDto == null) {
+            throw new BusinessException(ResponseCodeEnums.code_900);
+        }
+        //redis 里面登录记录，再校验是否为管理员›
+        if (checkAdmin && !userInfoDto.isAdmin()) {
+            throw new BusinessException(ResponseCodeEnums.code_404);
+        }
+        //成功后查询用户信息，放入到ThreadLocal里，给后续接口和方法使用
+        UserContext.set(userInfoDto);
     }
 }

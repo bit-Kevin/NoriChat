@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserService {
 
-    boolean register(User user);
+    void register(User user);
     TokenUserInfoDto login(User user);
     List<User> getAllUsers();
     User getUserById(String id);

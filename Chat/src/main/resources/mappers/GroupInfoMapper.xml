@@ -17,14 +17,15 @@
     </resultMap>
 
     <sql id="BaseColumns">
-        group_id, group_name, group_owner_id, create_time, group_notice, join_type, status,img_path
+        group_id
+        , group_name, group_owner_id, create_time, group_notice, join_type, status,img_path
     </sql>
 
     <insert id="insert" parameterType="io.github.kevvy.chat_java.entity.GroupInfo">
         INSERT INTO group_info
-        (group_id, group_name, group_owner_id, create_time, group_notice, join_type, status,img_path)
-        VALUES
-            (#{groupId}, #{groupName}, #{groupOwnerId}, #{createTime}, #{groupNotice}, #{joinType}, #{status}, #{imgPath})
+        (group_id, group_name, group_owner_id, create_time, group_notice, join_type, status, img_path)
+        VALUES (#{groupId}, #{groupName}, #{groupOwnerId}, #{createTime}, #{groupNotice}, #{joinType}, #{status},
+                #{imgPath})
     </insert>
 
     <update id="updateById" parameterType="io.github.kevvy.chat_java.entity.GroupInfo">
@@ -45,7 +46,7 @@
         UPDATE group_info
         SET group_notice = #{groupNotice}
         WHERE group_id = #{groupId}
-        AND `status` = 0
+          AND `status` = 0
     </update>
 
     <update id="updateStatus">
@@ -60,16 +61,54 @@
         WHERE group_id = #{groupId}
     </update>
 
+    <select id="findListByQuery"
+            parameterType="io.github.kevvy.chat_java.entity.dto.query.GroupQuery"
+            resultMap="BaseMap">
+
+        SELECT *
+        FROM group_info
+        <!--            <where> 自动添加where  并去掉首个and包括自己写的and/or-->
+        <where>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="groupId != null and groupId != ''">
+                AND group_id = #{groupId}
+            </if>
+            <if test="groupOwnerId != null and groupOwnerId != ''">
+                AND group_owner_id = #{groupOwnerId}
+            </if>
+            <if test="joinType != null">
+                AND join_type = #{joinType}
+            </if>
+            <if test="groupName != null and groupName != ''">
+                AND group_name LIKE CONCAT('%', #{groupName}, '%')
+            </if>
+            <if test="createTimeStart != null">
+                AND create_time <![CDATA[ >= ]]> #{createTimeStart}
+            </if>
+            <if test="createTimeEnd != null">
+                AND create_time <![CDATA[ <= ]]> #{createTimeEnd}
+            </if>
+        </where>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy}
+        </if>
+
+    </select>
+
 
     <select id="selectById" resultMap="BaseMap">
-        SELECT <include refid="BaseColumns"/>
+        SELECT
+        <include refid="BaseColumns"/>
         FROM group_info
         WHERE group_id = #{groupId}
         AND `status` = 0
     </select>
 
     <select id="listByOwnerId" resultMap="BaseMap">
-        SELECT <include refid="BaseColumns"/>
+        SELECT
+        <include refid="BaseColumns"/>
         FROM group_info
         WHERE group_owner_id = #{ownerId}
         AND `status` = 0
@@ -79,7 +118,7 @@
         SELECT COUNT(*)
         FROM group_info
         WHERE group_owner_id = #{ownerId}
-        AND `status` = 0
+          AND `status` = 0
     </select>
 
     <update id="deleteById">
@@ -87,9 +126,9 @@
         SET `status` = 1
         WHERE group_id = #{groupId}
     </update>
-<!--    <delete id="deleteById">-->
-<!--        DELETE FROM group_info-->
-<!--        WHERE group_id = #{groupId}-->
-<!--    </delete>-->
+    <!--    <delete id="deleteById">-->
+    <!--        DELETE FROM group_info-->
+    <!--        WHERE group_id = #{groupId}-->
+    <!--    </delete>-->
 
 </mapper>

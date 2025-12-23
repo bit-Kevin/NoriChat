@@ -45,14 +45,14 @@ public class AuthController {
         //验证检验码前面已经完成
         //校验密码格式
         if (StringUtil.isStrongPassword(user.getPassword())) return Result.error(400, "密码格式错误");
-        boolean success = userService.register(user);
-        return success ? Result.success("注册成功") : Result.error(400, "用户已存在");
+        userService.register(user);
+        return Result.success("注册成功");
     }
 
     // 登录
     @PostMapping("/login")
     public Result<TokenUserInfoDto> login(@RequestBody User user) {
-        //TODO 图片验证码
+        //TODO 后续添加邮箱验证码
         return Result.success("登录成功",userService.login(user));
     }
 

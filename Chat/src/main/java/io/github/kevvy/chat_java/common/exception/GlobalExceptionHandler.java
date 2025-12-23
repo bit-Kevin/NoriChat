@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public Result<Void> handleException(Exception e) {
-        logger.error("🔴 服务器异常", e);
+        logger.error("\uD83D\uDD34 服务器异常", e);
         logger.error("\uD83D\uDD34 服务器异常：{}", e.getMessage());
 
         return  Result.error(500,"服务器异常请稍后重试！");

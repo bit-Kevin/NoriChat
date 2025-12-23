@@ -1,9 +1,3 @@
-
-
-
-//此拦截器已停用，  权限控制已移到AOP GlobalInterceptor中
-
-
 //package io.github.kevvy.chat_java.interceptor;
 //
 //
@@ -19,6 +13,9 @@
 // * JWT 拦截器
 // * 用于拦截所有需要登录的接口请求，校验 Authorization 中的 Token 是否有效
 // */
+
+//--此拦截器已停用，  权限控制已移到AOP GlobalInterceptor中
+
 //@Component
 //@RequiredArgsConstructor //  自动生成构造方法并注入依赖
 //public class JwtInterceptor implements HandlerInterceptor {

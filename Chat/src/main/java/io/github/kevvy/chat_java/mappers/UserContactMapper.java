@@ -16,6 +16,8 @@ public interface UserContactMapper {
                      @Param("contactId") String contactId,
                      @Param("status") Integer status);
 
+    int updateById(UserContact row);
+
     UserContact selectByPk(@Param("userId") String userId,
                            @Param("contactId") String contactId);
 

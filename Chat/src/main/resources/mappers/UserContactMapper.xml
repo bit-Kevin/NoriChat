@@ -31,6 +31,19 @@
         WHERE user_id = #{userId}
           AND contact_id = #{contactId}
     </update>
+    <update id="updateById" parameterType="io.github.kevvy.chat_java.entity.UserContact">
+        UPDATE group_info
+        <set>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="contactId != null">contact_id = #{contactId},</if>
+            <if test="contactType != null">contact_type = #{contactType},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="lastUpdateTime != null">last_update_time = #{lastUpdateTime},</if>
+        </set>
+        WHERE user_id = #{userId}
+        AND contact_id = #{contactId}
+    </update>
 
     <select id="selectByPk" resultMap="BaseMap">
         SELECT <include refid="BaseColumns"/>

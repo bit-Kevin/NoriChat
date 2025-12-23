@@ -2,6 +2,9 @@ package io.github.kevvy.chat_java.entity.enums;
 
 import lombok.Data;
 
+/**
+ * 错误码枚举
+ */
 public enum ResponseCodeEnums {
     code_200(200, "请求成功"),
     code_404(404, "页面不存在"),

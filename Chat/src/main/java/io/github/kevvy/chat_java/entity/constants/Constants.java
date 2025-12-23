@@ -29,6 +29,15 @@ public class Constants {
     public static final String ROBOT_ID ="";
 
     public static final String REDIS_SYS_SETTING ="NoriChat:sysSetting";
+    /**
+     * 图像文件后续可以考虑放在云服务器上，如阿里云文件存储专用服务器，价格便宜
+     */
+    public static final String IMG_FILE_PATH ="imgFile/";
+    public static final String AVATAR_FILE_PATH ="imgFile/avatar/";
+    public static final String IMG_SUFFIX =".png";
+    public static final String COVER_IMG_SUFFIX ="_cover.png";//缩略图
+
+
 
 
 }

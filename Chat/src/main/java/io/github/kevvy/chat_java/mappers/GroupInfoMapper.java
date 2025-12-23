@@ -1,6 +1,7 @@
 package io.github.kevvy.chat_java.mappers;
 
 import io.github.kevvy.chat_java.entity.GroupInfo;
+import io.github.kevvy.chat_java.entity.dto.query.GroupQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -29,4 +30,6 @@ public interface GroupInfoMapper {
     int maxCountByOwnerID(@Param("ownerId") String ownerId);
 
     int deleteById(@Param("groupId") String groupId);
+
+    List<GroupInfo> findListByQuery(GroupQuery query);
 }

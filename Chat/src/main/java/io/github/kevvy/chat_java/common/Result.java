@@ -15,7 +15,7 @@ public class Result<T> implements Serializable {
     private int code;            // 状态码
     private String message;      // 提示信息
     private T data;              // 实际返回数据
-    private Map<String, Object> extra; // 扩展字段，可动态存放分页等信息
+    private Map<String, Object> extra; // 扩展字段，存放键值对
 
     public Result() {
         this.extra = new HashMap<>();

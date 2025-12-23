@@ -87,12 +87,12 @@ mybatis:
   type-aliases-package: io.github.kevvy.chat_java.entity
 
 project:
-  folder: f:/Chat/WebSer/WebAPP/
+  folder: ./NoriChat/WebSer/
 
 log:
   root:
-    #level: DEBUG
-    level: INFO
+    level: DEBUG
+    #level: INFO
     path: ./logs/NoriChat
 
 #超级管理员

@@ -4,6 +4,7 @@ import io.github.kevvy.chat_java.common.exception.BusinessException;
 import io.github.kevvy.chat_java.entity.config.APPConfig;
 import io.github.kevvy.chat_java.entity.dto.TokenUserInfoDto;
 import io.github.kevvy.chat_java.entity.User;
+import io.github.kevvy.chat_java.entity.enums.ResponseCodeEnums;
 import io.github.kevvy.chat_java.mappers.UserMapper;
 import io.github.kevvy.chat_java.redis.RedisComponent;
 import io.github.kevvy.chat_java.service.UserService;
@@ -11,6 +12,7 @@ import io.github.kevvy.chat_java.utils.JwtUtil;
 import io.github.kevvy.chat_java.utils.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,10 +30,12 @@ public class UserServiceImpl implements UserService {
     private final MailCodeService mailCodeService;
 
     @Override
-    public boolean register(User user) {
+    @Transactional(rollbackFor = Exception.class)//数据库事物
+    // 默认 RuntimeException会回滚，人为改成所有异常都会触发回滚
+    public void register(User user) {
         User exist = userMapper.findByEmail(user.getEmail());
         if (exist != null) {
-            return false; // 用户已存在
+            return; // 用户已存在
         }
         boolean ok = verify(user.getEmail(),user.getUserId());//注册时用 id字段临时存储验证码 code
         if (!ok) throw new BusinessException(400, "验证码错误或已过期");
@@ -40,9 +44,11 @@ public class UserServiceImpl implements UserService {
         user.setStatus(0);
         user.setCreateTime(LocalDateTime.now());
         user.setJoinType(1);
-        //添加机器人好友
-        userMapper.insertUser(user);
-        return true;
+        //todo 添加机器人好友
+        if (userMapper.insertUser(user)!=1){
+            throw new BusinessException(ResponseCodeEnums.code_601);
+        }
+
     }
 
     @Override

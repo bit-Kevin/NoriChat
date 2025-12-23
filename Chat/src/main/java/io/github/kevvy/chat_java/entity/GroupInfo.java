@@ -2,6 +2,7 @@ package io.github.kevvy.chat_java.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.github.kevvy.chat_java.entity.enums.UserJoinTypeEnums;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -41,7 +42,7 @@ public class GroupInfo implements Serializable {
      */
     private Integer joinType;
     /**
-     * 状态：1：正常 0：解散
+     * 状态：0：正常 1：解散
      */
     private Integer status;
     /**

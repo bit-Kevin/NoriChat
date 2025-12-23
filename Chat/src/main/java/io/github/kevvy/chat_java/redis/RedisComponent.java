@@ -38,6 +38,14 @@ public class RedisComponent {
     }
 
     /**
+     * 根据token查询用户初始化数据
+     * @param token
+     */
+    public TokenUserInfoDto getTokenUserInfoDto(String token) {
+        return  (TokenUserInfoDto) redisUtil.get(Constants.REDIS_KEY_WS_TOKEN + token);
+    }
+
+    /**
      * 刷新token时间
      */
     public void tokenRefresh(String token) {
