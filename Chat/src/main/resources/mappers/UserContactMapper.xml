@@ -17,6 +17,37 @@
     <sql id="BaseColumns">
         user_id, contact_id, contact_type, create_time, status, last_update_time
     </sql>
+    <sql id="BaseSelectSql">
+        <!--            <where> 自动添加where  并去掉首个and包括自己写的and/or-->
+        <where>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="userId != null and userId != ''">
+                AND user_id = #{userId}
+            </if>
+            <if test="contactId != null and contactId != ''">
+                AND contact_id = #{contactId}
+            </if>
+            <if test="contactType != null">
+                AND contact_type = #{contactType}
+            </if>
+            <if test="createTimeStart != null">
+                AND create_time <![CDATA[ >= ]]> #{createTimeStart}
+            </if>
+            <if test="createTimeEnd != null">
+                AND create_time <![CDATA[ <= ]]> #{createTimeEnd}
+            </if>
+            <if test="lastUpdateTimeStart != null">
+                AND lastUpdateTime <![CDATA[ >= ]]> #{lastUpdateTimeStart}
+            </if>
+            <if test="lastUpdateTimeEnd != null">
+                AND lastUpdateTime <![CDATA[ <= ]]> #{lastUpdateTimeEnd}
+            </if>
+        </where>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy}
+        </if>    </sql>
 
     <insert id="insert" parameterType="io.github.kevvy.chat_java.entity.UserContact">
         INSERT INTO user_contact
@@ -44,6 +75,24 @@
         WHERE user_id = #{userId}
         AND contact_id = #{contactId}
     </update>
+
+    <select id="findByQuery"
+            parameterType="io.github.kevvy.chat_java.entity.dto.query.UserContactQuery"
+            resultMap="BaseMap">
+
+        SELECT *
+        FROM user_contact
+        <include refid="BaseSelectSql"/>
+    </select>
+
+    <select id="findListByQuery"
+            parameterType="io.github.kevvy.chat_java.entity.dto.query.UserContactQuery"
+            resultMap="BaseMap">
+
+        SELECT *
+        FROM user_contact
+        <include refid="BaseSelectSql"/>
+    </select>
 
     <select id="selectByPk" resultMap="BaseMap">
         SELECT <include refid="BaseColumns"/>

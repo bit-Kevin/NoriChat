@@ -50,4 +50,7 @@ public class GroupInfo implements Serializable {
      */
     private String imgPath;
 
+    private Integer memberCount;
+
+
 }

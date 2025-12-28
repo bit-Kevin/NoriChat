@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface GroupService {
     void saveGroup(GroupInfo groupInfo);
-    List<GroupInfo> findGroupByQuery(GroupQuery groupQuery);
+    List<GroupInfo> findListGroupByQuery(GroupQuery groupQuery);
+    GroupInfo findGroupByQuery(GroupQuery groupQuery);
+
 }

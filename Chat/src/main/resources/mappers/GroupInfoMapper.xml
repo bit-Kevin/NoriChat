@@ -14,18 +14,49 @@
         <result column="join_type" property="joinType"/>
         <result column="status" property="status"/>
         <result column="img_path" property="imgPath"/>
+        <result column="member_count" property="memberCount"/>
     </resultMap>
 
     <sql id="BaseColumns">
         group_id
-        , group_name, group_owner_id, create_time, group_notice, join_type, status,img_path
+        , group_name, group_owner_id, create_time, group_notice, join_type, status,img_path,member_count
+    </sql>
+
+    <sql id="BaseSelectSql">
+        <!--            <where> 自动添加where  并去掉首个and包括自己写的and/or-->
+        <where>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="groupId != null and groupId != ''">
+                AND group_id = #{groupId}
+            </if>
+            <if test="groupOwnerId != null and groupOwnerId != ''">
+                AND group_owner_id = #{groupOwnerId}
+            </if>
+            <if test="joinType != null">
+                AND join_type = #{joinType}
+            </if>
+            <if test="groupName != null and groupName != ''">
+                AND group_name LIKE CONCAT('%', #{groupName}, '%')
+            </if>
+            <if test="createTimeStart != null">
+                AND create_time <![CDATA[ >= ]]> #{createTimeStart}
+            </if>
+            <if test="createTimeEnd != null">
+                AND create_time <![CDATA[ <= ]]> #{createTimeEnd}
+            </if>
+        </where>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy}
+        </if>
     </sql>
 
     <insert id="insert" parameterType="io.github.kevvy.chat_java.entity.GroupInfo">
         INSERT INTO group_info
-        (group_id, group_name, group_owner_id, create_time, group_notice, join_type, status, img_path)
+        (group_id, group_name, group_owner_id, create_time, group_notice, join_type, status, img_path,member_count)
         VALUES (#{groupId}, #{groupName}, #{groupOwnerId}, #{createTime}, #{groupNotice}, #{joinType}, #{status},
-                #{imgPath})
+                #{imgPath}),#{memberCount}
     </insert>
 
     <update id="updateById" parameterType="io.github.kevvy.chat_java.entity.GroupInfo">
@@ -38,6 +69,7 @@
             <if test="joinType != null">join_type = #{joinType},</if>
             <if test="status != null">status = #{status},</if>
             <if test="imgPath != null">img_path = #{imgPath},</if>
+            <if test="memberCount != null">member_count = #{memberCount},</if>
         </set>
         WHERE group_id = #{groupId}
     </update>
@@ -67,33 +99,17 @@
 
         SELECT *
         FROM group_info
-        <!--            <where> 自动添加where  并去掉首个and包括自己写的and/or-->
-        <where>
-            <if test="status != null">
-                AND status = #{status}
-            </if>
-            <if test="groupId != null and groupId != ''">
-                AND group_id = #{groupId}
-            </if>
-            <if test="groupOwnerId != null and groupOwnerId != ''">
-                AND group_owner_id = #{groupOwnerId}
-            </if>
-            <if test="joinType != null">
-                AND join_type = #{joinType}
-            </if>
-            <if test="groupName != null and groupName != ''">
-                AND group_name LIKE CONCAT('%', #{groupName}, '%')
-            </if>
-            <if test="createTimeStart != null">
-                AND create_time <![CDATA[ >= ]]> #{createTimeStart}
-            </if>
-            <if test="createTimeEnd != null">
-                AND create_time <![CDATA[ <= ]]> #{createTimeEnd}
-            </if>
-        </where>
-        <if test="orderBy != null and orderBy != ''">
-            ORDER BY ${orderBy}
-        </if>
+        <include refid="BaseSelectSql"/>
+
+    </select>
+
+    <select id="findByQuery"
+            parameterType="io.github.kevvy.chat_java.entity.dto.query.GroupQuery"
+            resultMap="BaseMap">
+
+        SELECT *
+        FROM group_info
+        <include refid="BaseSelectSql"/>
 
     </select>
 

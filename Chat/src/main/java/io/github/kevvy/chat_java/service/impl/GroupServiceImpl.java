@@ -92,8 +92,13 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<GroupInfo> findGroupByQuery(GroupQuery groupQuery) {
+    public List<GroupInfo> findListGroupByQuery(GroupQuery groupQuery) {
         return groupInfoMapper.findListByQuery(groupQuery);
+    }
+
+    @Override
+    public GroupInfo findGroupByQuery(GroupQuery groupQuery) {
+        return  groupInfoMapper.findByQuery(groupQuery);
     }
 
 }

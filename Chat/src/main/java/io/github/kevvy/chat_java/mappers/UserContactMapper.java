@@ -1,6 +1,7 @@
 package io.github.kevvy.chat_java.mappers;
 
 import io.github.kevvy.chat_java.entity.UserContact;
+import io.github.kevvy.chat_java.entity.dto.query.UserContactQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -26,4 +27,7 @@ public interface UserContactMapper {
 
     int deleteByPk(@Param("userId") String userId,
                    @Param("contactId") String contactId);
+
+    UserContact findByQuery(UserContactQuery query);
+    List<UserContact> findListByQuery(UserContactQuery query);
 }
