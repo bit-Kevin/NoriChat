@@ -3,7 +3,7 @@ package io.github.kevvy.chat_java.aspect;
 import io.github.kevvy.chat_java.annotation.GlobalInterceptor;
 import io.github.kevvy.chat_java.common.exception.BusinessException;
 import io.github.kevvy.chat_java.entity.constants.Constants;
-import io.github.kevvy.chat_java.entity.dto.TokenUserInfoDto;
+import io.github.kevvy.chat_java.entity.dto.TokenUserInfoDTO;
 import io.github.kevvy.chat_java.entity.enums.ResponseCodeEnums;
 import io.github.kevvy.chat_java.redis.RedisUtil;
 import io.github.kevvy.chat_java.utils.StringUtil;
@@ -72,7 +72,7 @@ public class GlobalOperationAspect {
             //用户没有登录
             throw new BusinessException(ResponseCodeEnums.code_900);
         }
-        TokenUserInfoDto userInfoDto = (TokenUserInfoDto) redisUtil.get(Constants.REDIS_KEY_WS_TOKEN + token);
+        TokenUserInfoDTO userInfoDto = (TokenUserInfoDTO) redisUtil.get(Constants.REDIS_KEY_WS_TOKEN + token);
         //redis 里面有没记录，登录超时
         if (userInfoDto == null) {
             throw new BusinessException(ResponseCodeEnums.code_900);

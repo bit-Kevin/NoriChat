@@ -7,7 +7,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Data
-public class SysSettingDto implements Serializable {
+public class SysSettingDTO implements Serializable {
     //确保从字节数据反序列化时版本一致
     @Serial
     private static final long serialVersionUID = 202402010001L;

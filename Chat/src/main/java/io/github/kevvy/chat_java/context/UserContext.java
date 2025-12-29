@@ -1,19 +1,19 @@
 package io.github.kevvy.chat_java.context;
 
-import io.github.kevvy.chat_java.entity.dto.TokenUserInfoDto;
+import io.github.kevvy.chat_java.entity.dto.TokenUserInfoDTO;
 
 public class UserContext {
 
 
-    private static final ThreadLocal<TokenUserInfoDto> USER_HOLDER = new ThreadLocal<>();
+    private static final ThreadLocal<TokenUserInfoDTO> USER_HOLDER = new ThreadLocal<>();
 
     /** 放入当前登录用户 */
-    public static void set(TokenUserInfoDto user) {
+    public static void set(TokenUserInfoDTO user) {
         USER_HOLDER.set(user);
     }
 
     /** 获取当前登录用户 */
-    public static TokenUserInfoDto get() {
+    public static TokenUserInfoDTO get() {
         return USER_HOLDER.get();
     }
 

@@ -7,11 +7,13 @@ import io.github.kevvy.chat_java.common.exception.BusinessException;
 import io.github.kevvy.chat_java.context.UserContext;
 import io.github.kevvy.chat_java.entity.GroupInfo;
 import io.github.kevvy.chat_java.entity.UserContact;
-import io.github.kevvy.chat_java.entity.dto.TokenUserInfoDto;
+import io.github.kevvy.chat_java.entity.dto.TokenUserInfoDTO;
+import io.github.kevvy.chat_java.entity.dto.UserContactDTO;
 import io.github.kevvy.chat_java.entity.dto.query.GroupQuery;
 import io.github.kevvy.chat_java.entity.dto.query.UserContactQuery;
 import io.github.kevvy.chat_java.entity.enums.GroupInfoStatusEnums;
 import io.github.kevvy.chat_java.entity.enums.UserContactStatusEnums;
+import io.github.kevvy.chat_java.entity.vo.GroupVO;
 import io.github.kevvy.chat_java.service.GroupService;
 import io.github.kevvy.chat_java.service.UserContactService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor // 自动生成构造方法并注入依赖不用@autowired
@@ -41,7 +44,7 @@ public class GroupController {
     @GetMapping("/loadMyGroup")
     @GlobalInterceptor
     public Result<List<GroupInfo>> getGroupListByUserID(){
-        TokenUserInfoDto userInfoDto = UserContext.get();
+        TokenUserInfoDTO userInfoDto = UserContext.get();
         GroupQuery query = new GroupQuery();
         query.setGroupOwnerId(userInfoDto.getUserID());
         query.setStatus(0);
@@ -57,13 +60,30 @@ public class GroupController {
         return Result.success(groupInfo);
     }
 
+    @GetMapping("/getGroupInfoChat")
+    @GlobalInterceptor
+    public Result<GroupVO> getGroupInfoChat(String groupId){
+        //在群聊内部，点击联系人头像
+        GroupInfo groupInfo = getGroupDetail(groupId);
+        //传入群组 id，然后查询联系人信息
+        UserContactQuery query = new UserContactQuery();
+        query.setContactId(groupId);
+        query.setOrderBy("create_time asc");
+        query.setStatus(UserContactStatusEnums.friend.getCode());
+        List<UserContact> listUserContactByQuery = userContactService.findListUserContactByQuery(query);
+        GroupVO groupVO = new GroupVO();
+        groupVO.setGroupInfo(groupInfo);
+        groupVO.setUserContactList(listUserContactByQuery);
+        return  Result.success(groupVO);
+    }
+
     /**
      * 因为调用多个service 不好写入任何一个service ，且多个请求复用。
      * @param groupId 群聊 id
      * @return GroupInfo
      */
     private GroupInfo getGroupDetail(String groupId){
-        TokenUserInfoDto userInfoDto = UserContext.get();
+        TokenUserInfoDTO userInfoDto = UserContext.get();
         UserContactQuery query = new UserContactQuery();
         query.setUserId(userInfoDto.getUserID());
         query.setContactId(groupId);

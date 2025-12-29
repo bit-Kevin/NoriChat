@@ -1,6 +1,7 @@
 package io.github.kevvy.chat_java.service.impl;
 
 import io.github.kevvy.chat_java.entity.UserContact;
+import io.github.kevvy.chat_java.entity.dto.UserContactDTO;
 import io.github.kevvy.chat_java.entity.dto.query.UserContactQuery;
 import io.github.kevvy.chat_java.mappers.UserContactMapper;
 import io.github.kevvy.chat_java.service.UserContactService;
@@ -21,6 +22,11 @@ public class UserContactServiceImpl implements UserContactService {
     @Override
     public List<UserContact> findListUserContactByQuery(UserContactQuery query) {
         return  userContactMapper.findListByQuery(query);
+    }
+
+    @Override
+    public UserContactDTO findByGroupId(String GroupId) {
+        return null;
     }
 
 }

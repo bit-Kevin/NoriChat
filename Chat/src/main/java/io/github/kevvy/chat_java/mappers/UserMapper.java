@@ -1,7 +1,9 @@
 package io.github.kevvy.chat_java.mappers;
 
 import io.github.kevvy.chat_java.entity.User;
+import io.github.kevvy.chat_java.entity.dto.UserContactDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -25,6 +27,9 @@ public interface UserMapper {
     int insertUser(User user);
 
     int deleteById(String id);
+
+    UserContactDTO findByGroupId(@Param("groupId") String GroupId);
+
 }
 
 

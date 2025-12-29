@@ -1,8 +1,8 @@
 package io.github.kevvy.chat_java.redis;
 
 import io.github.kevvy.chat_java.entity.constants.Constants;
-import io.github.kevvy.chat_java.entity.dto.SysSettingDto;
-import io.github.kevvy.chat_java.entity.dto.TokenUserInfoDto;
+import io.github.kevvy.chat_java.entity.dto.SysSettingDTO;
+import io.github.kevvy.chat_java.entity.dto.TokenUserInfoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +30,7 @@ public class RedisComponent {
      * 把用户初始化文件，userid，用来刷新token的数据存入redis，
      * @param tokenUserInfoDto
      */
-    public void saveTokenUserInfoDto(TokenUserInfoDto tokenUserInfoDto) {
+    public void saveTokenUserInfoDto(TokenUserInfoDTO tokenUserInfoDto) {
         redisUtil.set(Constants.REDIS_KEY_WS_TOKEN + tokenUserInfoDto.getToken(), tokenUserInfoDto, Constants.REDIS_TIME_1DAY);
         redisUtil.set(Constants.REDIS_KEY_WS_TOKEN_REFRESH + tokenUserInfoDto.getToken(), "1", Constants.REDIS_TIME_1DAY * 2);
         redisUtil.set(Constants.REDIS_KEY_WS_TOKEN_USERID + tokenUserInfoDto.getToken(), tokenUserInfoDto.getUserID(), Constants.REDIS_TIME_1DAY);//预留
@@ -41,8 +41,8 @@ public class RedisComponent {
      * 根据token查询用户初始化数据
      * @param token
      */
-    public TokenUserInfoDto getTokenUserInfoDto(String token) {
-        return  (TokenUserInfoDto) redisUtil.get(Constants.REDIS_KEY_WS_TOKEN + token);
+    public TokenUserInfoDTO getTokenUserInfoDto(String token) {
+        return  (TokenUserInfoDTO) redisUtil.get(Constants.REDIS_KEY_WS_TOKEN + token);
     }
 
     /**
@@ -57,9 +57,9 @@ public class RedisComponent {
     /**
      * 初始化系统设置
      */
-    public SysSettingDto getSysSetting() {
-        SysSettingDto settingDto = (SysSettingDto) redisUtil.get(Constants.REDIS_SYS_SETTING);
-         settingDto = settingDto==null? new SysSettingDto():settingDto;
+    public SysSettingDTO getSysSetting() {
+        SysSettingDTO settingDto = (SysSettingDTO) redisUtil.get(Constants.REDIS_SYS_SETTING);
+         settingDto = settingDto==null? new SysSettingDTO():settingDto;
          return settingDto;
     }
 }

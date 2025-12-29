@@ -49,6 +49,14 @@
         WHERE email = #{email}
           AND `status` = 0
     </select>
+    <select id="findByGroupId" parameterType="String" resultType="io.github.kevvy.chat_java.entity.dto.UserContactDTO">
+        SELECT c.*,
+               u.nick_name nickName ,
+               u.sex sex
+        FROM user_contact c
+                 INNER JOIN `user` u ON u.user_id = c.user_id
+        WHERE c.contact_id = #{GroupId};
+    </select>
 
     <insert id="insertUser" parameterType="io.github.kevvy.chat_java.entity.User">
         INSERT INTO user(

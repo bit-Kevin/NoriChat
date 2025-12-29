@@ -3,7 +3,7 @@ package io.github.kevvy.chat_java.service.impl;
 import io.github.kevvy.chat_java.common.exception.BusinessException;
 import io.github.kevvy.chat_java.entity.GroupInfo;
 import io.github.kevvy.chat_java.entity.UserContact;
-import io.github.kevvy.chat_java.entity.dto.SysSettingDto;
+import io.github.kevvy.chat_java.entity.dto.SysSettingDTO;
 import io.github.kevvy.chat_java.entity.dto.query.GroupQuery;
 import io.github.kevvy.chat_java.entity.enums.ResponseCodeEnums;
 import io.github.kevvy.chat_java.entity.enums.UserContactTypeEnums;
@@ -45,7 +45,7 @@ public class GroupServiceImpl implements GroupService {
             //新建
             //查询群主已创建是否已经达到最大数
             int count = groupInfoMapper.maxCountByOwnerID(groupInfo.getGroupOwnerId());
-            SysSettingDto sysSetting = redisComponent.getSysSetting();
+            SysSettingDTO sysSetting = redisComponent.getSysSetting();
             if (count >= sysSetting.getMaxGroupCount()) {
                 throw new BusinessException(601, "最多创建" + sysSetting.getMaxGroupCount() + "个群聊");
             }
